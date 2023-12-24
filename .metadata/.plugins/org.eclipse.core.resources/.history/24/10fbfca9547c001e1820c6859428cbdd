@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+
+public class CardDeck {
+	
+	private ArrayList<Card> deck;
+
+	
+	public CardDeck() {
+		deck = new ArrayList<Card>();
+		for (int n = 1; n < 14; n++) {
+			for (int s = 0; s < 4; s++) {
+				deck.add(new Card(n,s));
+			}
+		}
+	}
+	
+	public Card draw() {
+		if (deck.size() == 0) {
+			return null; //Come back here to throw a reshuffle deck algo
+		}
+		
+		return deck.remove((int) (Math.random() * deck.size()));
+	}
+	
+	
+}
+
+

@@ -1,0 +1,42 @@
+
+public class DLLQueue<E> implements Queue<E> {
+
+	
+	private DoublyLinkedList<E> list;
+	
+	public DLLQueue() {
+		list = new DoublyLinkedList<E>();
+	}
+	
+	
+	public int size() {
+		return list.size();
+	}
+
+
+	public boolean isEmpty() {
+		return list.isEmpty();
+	}
+
+	
+	public void enqueue(E v) {
+		list.addFirst(v);
+		
+	}
+
+	@Override
+	public E dequeue() {
+		return list.removeLast();
+	}
+
+	@Override
+	public E first() {
+		E first = list.get(list.size()-1);
+		return first;
+	}
+	
+	public String toString() {
+		return list.printReverse();
+	}
+
+}

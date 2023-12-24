@@ -1,0 +1,80 @@
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+public class GolfScreen extends JFrame implements ActionListener {
+	
+	int count = 0;
+	
+	JFrame frame;
+	JPanel holder;
+	JLabel label;
+	JButton button;
+	
+	JMenuBar menubar;
+	JMenu menu;
+	JMenuItem reset;
+	
+	
+	public GolfScreen() {
+		
+		frame = new JFrame();
+		frame.setSize(500,500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		holder = new JPanel();
+		holder.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
+		holder.setLayout(new GridLayout(0,1));
+		
+		menubar = new JMenuBar();
+		
+		menu = new JMenu("File");
+		
+		reset = new JMenuItem("Reset");
+		reset.addActionListener(this);
+
+		
+		menu.add(reset);
+		menubar.add(menu);
+		
+		
+		frame.setJMenuBar(menubar);
+		
+		
+	
+		
+		button = new JButton("Click me");
+		holder.add(button);
+		
+		button.addActionListener(this); 
+		
+		label = new JLabel("Number of clicks: 0");
+		holder.add(label);
+		
+		frame.add(holder, BorderLayout.CENTER);
+		frame.setTitle("Golf Game");
+
+		frame.setVisible(true);
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource() == button) {
+			count++;
+			label.setText("Number of clicks: " + count);
+		}
+		
+		if (e.getSource() == reset) {
+			count = 0;
+			label.setText("PENIS");
+		}
+		
+	}
+	
+	
+}

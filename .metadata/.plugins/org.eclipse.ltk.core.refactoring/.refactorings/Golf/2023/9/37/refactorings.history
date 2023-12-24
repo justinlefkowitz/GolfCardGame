@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring accessors="true" comment="Delete 3 elements from project &apos;Golf&apos;&#x0D;&#x0A;- Original project: &apos;Golf&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     DLLQueue.java&#x0D;&#x0A;     DoublyLinkedList.java&#x0D;&#x0A;     Queue.java" description="Delete elements" element1="/src&lt;{Queue.java" element2="/src&lt;{DLLQueue.java" element3="/src&lt;{DoublyLinkedList.java" elements="3" flags="589830" id="org.eclipse.jdt.ui.delete" resources="0" stamp="1694737935172" subPackages="false" version="1.0"/>
+</session>

@@ -1,0 +1,21 @@
+
+
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+public class DeckPanel extends JPanel {
+	
+	
+	public DeckPanel(CardDeck d, Card p) {
+		this.setLayout(new GridLayout(1,2, 30, 30));
+		this.setOpaque(false);
+		
+		this.add(p);
+		this.add(new JButton("DECK"));
+		
+	}
+	
+
+}

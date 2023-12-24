@@ -1,0 +1,147 @@
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+public class Card extends JPanel{
+	
+	// suits are 0,1,2,3 {Hearts, Clubs, Spades, Diamonds};
+	public enum Suit {
+		HEARTS,
+		CLUBS,
+		DIAMONDS,
+		SPADES;
+	}
+	
+	
+	
+	private int num;
+	private Suit suit;
+	private boolean isUp;
+	
+	private BufferedImage cardImage;
+	private BufferedImage backImage;
+	
+	
+	public Card(int n, Suit s) {
+		num = n;
+		suit = s;
+		setUp(true);
+		
+		
+		try {
+			cardImage = ImageIO.read(getClass().getResource("./images/" + addressName() + ".png"));
+			backImage = ImageIO.read(getClass().getResource("./images/cardback.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.setSize(new Dimension(5,10));
+		this.setMaximumSize(new Dimension(5,10));
+	}
+	
+	public String toString() { 
+		String s = "";
+		String number = "";
+		
+
+		
+		if (num == 1) {
+			number = "Ace";
+		} else if (num == 2) {
+			number = "Two";
+		} else if (num == 3) {
+			number = "Three";
+		} else if (num == 4) {
+			number = "Four";
+		} else if (num == 5) {
+			number = "Five";
+		} else if (num == 6) {
+			number = "Six";
+		} else if (num == 7) {
+			number = "Seven";
+		} else if (num == 8) {
+			number = "Eight";
+		} else if (num == 9) {
+			number = "Nine";
+		} else if (num == 10) {
+			number = "Ten";
+		} else if (num == 11) {
+			number = "Jack";
+		} else if (num == 12) {
+			number = "Queen";
+		} else if (num == 13) {
+			number = "King";
+		}
+		
+		return number + " of " + suit;
+	}
+	
+	
+	public String addressName() {
+		String s = "";
+		String number = "";
+		
+
+		
+		if (num == 1) {
+			number = "Ace";
+		} else if (num == 11) {
+			number = "Jack";
+		} else if (num == 12) {
+			number = "Queen";
+		} else if (num == 13) {
+			number = "King";
+		} else {
+			number = Integer.toString(num);
+		}
+		
+		return (number + "_of_" + suit).toLowerCase();
+	}
+	
+	
+	public int getNum() {
+		return num;
+	}
+	
+	public String getSuit() {
+		return suit.toString().toLowerCase();
+	}
+
+	public boolean isUp() {
+		return isUp;
+	}
+
+	public void setUp(boolean isUp) {
+		this.isUp = isUp;
+	}
+	
+	
+	public void flip() {
+		isUp = !isUp;
+	}
+	
+	protected void paintComponent(Graphics g) {
+
+		
+		BufferedImage img = cardImage;
+		if (!isUp) img = backImage;
+		
+		g.drawImage(img, 10, 10, null);
+	}
+
+
+	
+
+
+}
+
+
+

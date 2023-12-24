@@ -1,0 +1,325 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+public class GUI extends JFrame implements ActionListener, MouseListener {
+
+	private Dimension size;
+
+	private Engine game;
+	private ImagePanel background;
+	private JPanel gameBoard;
+	
+	private JPanel bottom;
+	private JPanel top;
+	private JPanel left;
+	private JPanel right;
+	
+	private JPanel statePanel;
+	private JPanel deckPanel;
+	
+	private HashMap<Player, JPanel> position;
+
+	
+	
+	public GUI(Engine e) {
+		game = e;
+		
+		size = new Dimension(750,750);
+		this.setTitle("Golf");
+		this.setSize(size);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		
+		//set background
+		try {
+			background = new ImagePanel(ImageIO.read(getClass().getResource("./images/background.jpg")));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		this.setContentPane(background);
+		this.setLayout(new BorderLayout(0,0));
+	
+		
+		setGameBoard();
+
+		this.setVisible(true);
+		initialize();
+	}
+	
+	
+	private void setGameBoard() {
+		
+
+		//creates gameBoard
+		gameBoard = new JPanel();
+		gameBoard.setLayout(new GridLayout(3,3));
+		//gameBoard.setBorder(BorderFactory.createLineBorder(Color.red, 1));
+		gameBoard.setOpaque(false);
+		gameBoard.setSize(new Dimension(500,500));
+		
+		
+		//sets spacers
+		JPanel tl = createSpacerPanel();
+		JPanel br = createSpacerPanel();
+		JPanel tr = createSpacerPanel();
+		
+		
+		//set player panels
+		bottom = createPlayerPanel(game.getPlayer(0));
+		top = createPlayerPanel(game.getPlayer(1));
+		left = createPlayerPanel();
+		right = createPlayerPanel();
+		
+		deckPanel = createDeckPanel();
+		statePanel = createStatePanel();
+		
+		gameBoard.add(tl);
+		gameBoard.add(top);
+		gameBoard.add(tr);
+		gameBoard.add(left);
+		gameBoard.add(deckPanel);
+		gameBoard.add(right);
+		gameBoard.add(statePanel);
+		gameBoard.add(bottom);
+		gameBoard.add(br);
+		
+
+
+		
+		
+		
+		
+		
+		this.add(gameBoard);
+		
+	}
+
+
+	private void initialize() {
+		
+		position = new HashMap<>();
+		
+		switch (game.playerCount()) {
+		
+			
+			case 2: 
+				position.put(game.getPlayer(0), bottom);
+				position.put(game.getPlayer(1), top);
+				break;
+			case 3:
+				position.put(game.getPlayer(0), bottom);
+				position.put(game.getPlayer(1), left);
+				position.put(game.getPlayer(2), right);
+				break;
+			case 4:
+				position.put(game.getPlayer(0), bottom);
+				position.put(game.getPlayer(1), left);
+				position.put(game.getPlayer(2), top);
+				position.put(game.getPlayer(3), right);
+				break;		
+			default: System.out.println("Error bro");
+				break;
+			
+		}
+	}
+	
+	
+
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+		
+		
+		//if game state is for a players first choice
+		if (game.getGameState() == 1) {
+			
+			
+			//if deck
+			if (e.getComponent() instanceof CardDeck) {
+				//update game engine information
+				game.nextCard();
+				game.setGameState(2);
+				
+				//update GUI accordingly
+				flipDeck();
+			
+			}
+			
+			
+			
+			if (e.getComponent() instanceof Card) {
+				
+				
+				Card c = (Card) e.getComponent();
+				
+				
+				//if pile
+				if (c.getParent().equals(deckPanel)) {
+					
+					game.setGameState(3);
+					
+				} else if (position.get(game.getActivePlayer()).equals(c.getParent())){ // if hand card to flip
+					
+					
+					
+					
+					
+					c.flip();
+					
+					
+				}
+				
+			}
+	
+		}
+		
+		
+			
+		
+		updateState();
+		validate();
+		repaint();
+
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub	
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+
+	public JPanel createPlayerPanel() {
+		JPanel panel = new JPanel();
+		//panel.setBackground(Color.green);
+		panel.setOpaque(false);
+		
+		return panel;
+		
+	}
+
+	public JPanel createPlayerPanel(Player p) {
+		
+		JPanel panel = new JPanel();
+		
+		//panel.setBackground(Color.green);
+		panel.setOpaque(false);
+		panel.setLayout(new GridLayout(2,2,10,10));
+		
+		for (int i = 0; i < 4; i++) {
+			p.hand.getKeys().getCard(i).addMouseListener(this);
+			panel.add(p.hand.getCard(i));
+		}
+		
+		
+		return panel;
+		
+	}
+	
+	public JPanel createDeckPanel() {
+		JPanel panel = new JPanel();
+		
+		
+		panel.setLayout(new GridLayout(1,2, 30, 30));
+		panel.setOpaque(false);
+		
+		game.getCards().addMouseListener(this);
+		panel.add(game.getCards());
+		
+		game.getTop().addMouseListener(this);
+		panel.add(game.getTop());
+		
+		
+		
+		return panel;
+	}
+
+	public JPanel createSpacerPanel() {
+		
+		JPanel panel = new JPanel();
+		panel.setOpaque(false);		
+		return panel;
+	}
+		
+	public JPanel createSpacerPanel(int w, int h) {
+
+		JPanel panel = new JPanel();
+		panel.setSize(new Dimension(w,h));
+		panel.setOpaque(false);
+		return panel;
+	}
+		
+	public JPanel createStatePanel() {
+		JPanel panel = new JPanel();
+		
+		panel.setOpaque(false);
+		
+		JLabel label = new JLabel();
+		
+		panel.add(label);
+		
+		label.setText(Integer.toString(game.getGameState()));
+		
+		return panel;
+	}
+	
+	public void updateState() {
+		JLabel label = (JLabel) statePanel.getComponent(0);
+		label.setText(Integer.toString(game.getGameState()));
+	}
+	
+	public void flipDeck() {
+		deckPanel.remove(1);
+		game.getTop().addMouseListener(this);
+		deckPanel.add(game.getTop());
+	}
+
+	public void playerFlip(JPanel p, int i) {	
+		Card c = (Card) p.getComponent(i);	
+		c.flip();
+	}
+	
+	
+}

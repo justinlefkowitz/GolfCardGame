@@ -1,0 +1,65 @@
+
+public class Card {
+	
+	// suits are 0,1,2,3 {Hearts, Clubs, Spades, Diamonds};
+	
+	private int num;
+	private int suit;
+	
+	
+	public Card(int n, int s) {
+		num = n;
+		suit = s;
+	}
+	
+	public String toString() { 
+		String s = "";
+		String number = "";
+		
+		if (suit == 0) {
+			s = "Hearts";
+		} else if (suit == 1) {
+			s = "Clubs";
+		} else if (suit == 2) {
+			s = "Spades";
+		} else if (suit == 3) {
+			s = "Diamonds";
+		}
+		
+		if (num == 1) {
+			number = "Ace";
+		} else if (num == 2) {
+			number = "Two";
+		} else if (num == 3) {
+			number = "Three";
+		} else if (num == 4) {
+			number = "Four";
+		} else if (num == 5) {
+			number = "Five";
+		} else if (num == 6) {
+			number = "Six";
+		} else if (num == 7) {
+			number = "Seven";
+		} else if (num == 8) {
+			number = "Eight";
+		} else if (num == 9) {
+			number = "Nine";
+		} else if (num == 10) {
+			number = "Ten";
+		} else if (num == 11) {
+			number = "Jack";
+		} else if (num == 12) {
+			number = "Queen";
+		} else if (num == 13) {
+			number = "King";
+		}
+		
+		return number + " of " + s;
+	}
+	
+	
+	public int getNum() {
+		return num;
+	}
+
+}

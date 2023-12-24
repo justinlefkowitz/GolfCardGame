@@ -1,0 +1,17 @@
+
+
+import java.awt.GridLayout;
+
+import javax.swing.JPanel;
+
+public class DeckPanel extends JPanel {
+	
+	
+	public DeckPanel(CardDeck d) {
+		this.setLayout(new GridLayout(1,2, 30, 30));
+		
+		
+	}
+	
+
+}

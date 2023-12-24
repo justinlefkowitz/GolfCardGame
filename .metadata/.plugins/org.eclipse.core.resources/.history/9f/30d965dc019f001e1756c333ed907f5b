@@ -1,0 +1,32 @@
+import javax.swing.*;
+
+public class Test {
+	
+	public static void main(String[] args) {
+		
+		JFrame frame = new JFrame();
+		
+		JPanel panel = new JPanel();
+		JButton button = new JButton("peen");
+
+		panel.add(button);
+		frame.add(panel);
+		
+		
+		frame.setSize(500,500);
+		frame.setVisible(true);
+		
+		
+		int count = 2;
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+
+}

@@ -1,0 +1,38 @@
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+public class Test {
+	
+	private static JButton button;
+	
+	public static void main(String[] args) {
+		
+		JFrame frame = new JFrame();
+		
+		JPanel panel = new JPanel();
+		button = new JButton("peen");
+		
+		button.addActionListener(e -> selectionButtonPressed());
+
+		panel.add(button);
+		frame.add(panel);
+		
+		
+		frame.setSize(500,500);
+		frame.setVisible(true);
+		
+		
+		int count = 2;
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+
+}

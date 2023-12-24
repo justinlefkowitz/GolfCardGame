@@ -1,0 +1,13 @@
+
+public interface Queue<T> {
+	// @return the number of elements in the stack
+	public int size();
+	// @return true if the stack is empty, false otherwise
+	public boolean isEmpty();
+	// @param v is the element to add
+	public void enqueue(T v);
+	// @return the top element on the stack, removing it (null if empty)
+	public T dequeue();
+	// @return the value on top of the stack (without removing it) (null if empty)
+	public T first();
+}

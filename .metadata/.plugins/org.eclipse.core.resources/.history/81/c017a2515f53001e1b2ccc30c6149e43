@@ -1,0 +1,151 @@
+
+
+import java.util.NoSuchElementException;
+
+public class DoublyLinkedList<E> {
+	
+	private int size;
+	private Node header;
+	private Node trailer;
+	
+	public DoublyLinkedList() {
+		size = 0;
+		header = new Node();
+		trailer = new Node();
+		header.next = trailer;
+		trailer.prev = header;
+	}
+	
+	
+	public void addFirst(E e) {
+		addBetween(e, header, header.next);
+	}
+	
+	public void addLast(E e) {
+		addBetween(e, trailer.prev, trailer);
+	}
+	
+	
+	
+	public String toString() {
+		String result = "List Contents: ";
+		Node current = header.next;
+		for (int i = 0; i < size; i++) {
+			result = result + current.value + " ";
+			current = current.next;
+		}
+		return result;
+	}
+	
+	private void addBetween(E e, Node first, Node second) {
+		Node newNode = new Node(e);
+		newNode.prev = first;
+		newNode.next = second;
+		second.prev = newNode;
+		first.next = newNode;
+		size++;
+	}
+	
+	
+	private E removeBetween(Node node1, Node node2) {
+		//check if either is null
+        if (node1 ==  null || node2 == null) {
+        	throw new IllegalArgumentException("Must have valid parameters");
+        }
+        //Check for an empty list
+		if (header.next ==  trailer) {
+			throw new NoSuchElementException("Cannot delete from an empty list");
+		}
+        //check that given nodes are 1 apart
+        if(node1.next.next != node2) {
+        	throw new IllegalArgumentException("Must be 1 node apart");
+        }
+        
+		E valueToReturn = null;
+		
+		Node remove = node1.next;
+		valueToReturn = remove.value;
+		node1.next = node2;
+		node2.prev = node1;
+		size--;
+		return valueToReturn;
+	}
+	
+	public E removeFirst() {
+		return removeBetween(header, header.next.next);
+	}
+	
+	public E removeLast() {
+		return removeBetween(trailer.prev.prev, trailer);
+	}
+	
+	
+	public int search(E e) {
+		Node current = header.next;
+		for (int i = 0; i < size; i++) {
+			if (current.value.equals(e) == true) {
+				return i;
+			}
+			current = current.next;
+		}
+		return -1;
+	}
+	
+	public String printReverse() {
+		
+		String print = "";
+		Node current = header.next;
+		for (int i = 0; i < size; i++) {
+			print = current.value + " " + print;
+			current = current.next;
+		}
+		return print;
+		
+	}
+	
+	public E get(int index) {
+		if (index >= size || index < 0) {
+			throw new IndexOutOfBoundsException();
+		}
+		Node current = header.next;
+		E value;
+		for (int i = 0; i < index; i++) {
+			current = current.next;
+		}
+		value = current.value;
+		return value;
+	}
+	
+	public int size() {
+		return size;
+	}
+	
+	public boolean isEmpty() {
+		if (size == 0) {
+			return true;
+		} return false;
+	}
+	
+	
+	private class Node {
+		
+		private E value;
+		private Node prev;
+		private Node next;
+		
+		
+		public Node() {
+			value = null;
+			prev = null;
+			next = null;
+		}
+		
+		public Node(E e) {
+			value = e;
+			prev = null;
+			next = null;
+		}
+		
+	}
+
+}

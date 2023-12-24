@@ -1,0 +1,59 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
+public class CardDeck extends JPanel{
+	
+	private ArrayList<Card> deck;
+
+	
+	public CardDeck() {
+		deck = new ArrayList<Card>();
+		for (int n = 1; n < 14; n++) {
+			for (Card.Suit s: Card.Suit.values()) {
+				deck.add(new Card(n,s));
+			}
+		}
+		
+		this.setSize(new Dimension(5,10));
+		this.setMaximumSize(new Dimension(5,10));
+	}
+	
+	public Card draw() {
+		if (deck.size() == 0) {
+			return null; //Come back here to throw a reshuffle deck algo
+		}
+		
+		return deck.remove((int) (Math.random() * deck.size()));
+	}
+	
+	protected void paintComponent(Graphics g) {
+		g.setColor(Color.BLACK);
+		BufferedImage img = null;
+		
+		try {
+			img = ImageIO.read(getClass().getResource("./images/cardback.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		g.drawImage(img, 10, 10, img.getWidth(), img.getHeight(), null);
+		
+		
+	}
+	
+	public ArrayList<Card> getDeck() {
+		return deck;
+	}
+	
+
+	
+}
+
+

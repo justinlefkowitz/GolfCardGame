@@ -1,0 +1,215 @@
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Engine {
+
+	private ArrayList<Player> players = new ArrayList<Player>();
+	private CardDeck cards = new CardDeck();
+	private Card topCard;
+	private Card picked;
+	
+	private Scanner in;
+	private String answer;
+	
+	
+	private int gameState;
+	private Player activePlayer;
+	
+	private int round;
+
+	
+	/*
+	0 = initialized
+	1 = first choice
+	2 = second choice
+	3 = replace
+	4 = flip
+	
+	*/
+	
+	public Engine() {
+		gameState = 0;
+		
+		in = new Scanner(System.in);
+		
+		players.add(new Player("Justin"));
+		players.add(new Player("Simon"));
+		//players.add(new Player("James"));
+		round = 1;
+		
+		startGame();
+		display();
+		
+		
+		
+	}
+	
+	
+	
+	
+
+	
+
+	
+	public void startGame() {
+		for (int i = 0; i < 4; i++) {
+			for (int p = 0; p < players.size(); p++) {
+				players.get(p).hand.receive(getCards().draw());
+			}
+			nextCard();
+		}
+		
+		gameState = 1;
+		activePlayer = players.get(0);
+		
+	}
+	
+	
+	public void display() {
+		for (Player p: players) {
+			System.out.println(p.getName());
+			p.hand.printHand();
+			System.out.println();
+		}
+		System.out.println("\nThe top card is " + topCard);
+		
+	}
+	
+	
+	
+	
+	
+	/*
+
+	
+	
+	
+	
+	
+	
+	
+
+	public void turn(Player p) {
+		
+		answer = "null!";
+		
+		while (!(answer.equals("deck") || answer.equals("top") || answer.equals("flip"))) {
+			System.out.println(p.getName() + ", choose 'deck' or 'top' or 'flip'");
+			answer = in.nextLine();
+		}
+		
+		if (answer.equals("top")) {
+			
+			cardReplace(p, topCard);
+			
+			
+		} else if (answer.equals("deck")) {
+
+			
+			picked = getCards().draw();
+			System.out.println("You picked the " + picked);
+			
+			
+			while (!(answer.equals("keep") || answer.equals("toss"))) {
+				System.out.println(p.getName() + ", would you like to 'keep' or 'toss'?");
+				answer = in.nextLine();
+			}
+			
+			
+			
+			if (answer.equals("keep")) {
+				
+				cardReplace(p, picked);
+				
+				
+			} else {
+				topCard = picked;
+				
+				flip(p);
+				
+			}
+			
+		} else {
+			
+			flip(p);
+		}
+		
+		
+	}
+	
+	*/
+
+
+	public void nextCard() {
+		topCard = getCards().draw();
+		//topCard.flip();
+	}
+	
+	
+	
+	public Player getPlayer(int i) {
+		return players.get(i);
+	}
+	
+
+	public CardDeck getCards() {
+		return cards;
+	}
+
+	public Card getTop() {
+		return topCard;
+	}
+
+
+	public int getGameState() {
+		return gameState;
+	}
+	
+	public void setGameState(int i) {
+		gameState = i;
+	}
+
+
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+	
+	public int playerCount() {
+		return players.size();
+	}
+	
+	public int playerID(Player p) {
+		return players.indexOf(p);
+	}
+	
+	
+	/*
+	public void cardReplace(Player p, Card c) {
+		int i;
+		do {
+			System.out.println("Which index would you like to replace?");
+			i = in.nextInt();	
+		} while (p.hand.getHandState(i) != 0);
+		
+		topCard = p.hand.trade(c, i);
+		p.hand.play(i);	
+	}
+	
+	
+	
+	public void flip(Card c) {
+		int i = activePlayer
+		do {
+			System.out.println("Which index would you like to flip?");
+			i = in.nextInt();
+		} while (activePlayer.hand.getHandState(i) != 0);
+		
+		activePlayer.hand.play(i);
+	}
+	*/
+
+
+	
+	
+}
