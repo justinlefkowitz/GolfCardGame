@@ -35,9 +35,9 @@ public class Engine {
 		in = new Scanner(System.in);
 		
 		players.add(new Player("Justin"));
+		players.add(new Player("Ellie"));
 		//players.add(new Player("Simon"));
 		//players.add(new Player("Lily"));
-		players.add(new Player("Ellie"));
 		
 		swing = 1;
 		
@@ -51,6 +51,9 @@ public class Engine {
 		for (int i = 0; i < 4; i++) {
 			for (int p = 0; p < players.size(); p++) {
 				players.get(p).hand.receive(getCards().draw());
+				if (i < 2) {
+					players.get(p).hand.peek(i);
+				}
 			}
 			nextCard();
 		}
@@ -70,7 +73,6 @@ public class Engine {
 		
 	}
 	
-
 	public void displayScore() {
 		for (Player p: players) {
 			System.out.println(p.getName() + " has a score of: " + p.hand.score());
@@ -79,41 +81,6 @@ public class Engine {
 	
 	public void nextCard() {
 		topCard = getCards().draw();
-		//topCard.flip();
-	}
-	
-	
-	
-	public Player getPlayer(int i) {
-		return players.get(i);
-	}
-	
-
-	
-	public CardDeck getCards() {
-		return cards;
-	}
-
-	
-	public Card getTop() {
-		return topCard;
-	}
-
-
-	
-	public int getGameState() {
-		return gameState;
-	}
-	
-	
-	public void setGameState(int i) {
-		gameState = i;
-	}
-
-
-	
-	public Player getActivePlayer() {
-		return activePlayer;
 	}
 	
 	public int playerCount() {
@@ -124,6 +91,30 @@ public class Engine {
 		return players.indexOf(p);
 	}
 	
+	public Player getPlayer(int i) {
+		return players.get(i);
+	}
+	
+	public Player getActivePlayer() {
+		return activePlayer;
+	}
+	
+	public CardDeck getCards() {
+		return cards;
+	}
+
+	public Card getTop() {
+		return topCard;
+	}
+
+	public int getGameState() {
+		return gameState;
+	}
+	
+	public void setGameState(int i) {
+		gameState = i;
+	}
+
 	public int getSwing() {
 		return swing;
 	}

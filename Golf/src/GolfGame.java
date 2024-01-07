@@ -10,6 +10,11 @@ public class GolfGame {
 		gui = new GUI(game);
 	}
 	
+	public GolfGame(Engine g) {
+		game = g;
+		gui = new GUI(g);
+	}
+	
 	public static void main(String[] args) {
 		GolfGame golf = new GolfGame();
 		

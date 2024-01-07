@@ -1,38 +1,44 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class Hand {
 	
 	
-	private HashMap<Card, Integer> hand;
+	private ArrayList<Card> hand;
 	//contains whether cards are shown or not,
 			//0 = face down
 			//1 = face up
+			//2 = transparent preview?
 	
 	
 	
 	public Hand() {
-		hand = new HashMap<>();
+		hand = new ArrayList<>();
 	}
-
+	
+	public List<Card> getHand() {
+		return hand;
+	}
 	
 	public void receive(Card c) {
-		hand.put(c, 0);
+		hand.add(c);
+	}
+	
+	public void peek(Card c) {
+		hand.get(hand.lastIndexOf(c)).setState(2);
+	}
+	
+	public void peek(int i) {
+		hand.get(i).setState(2);
 	}
 	
 	public void play(Card c) {
-		hand.put(c, 1);
+		hand.get(hand.lastIndexOf(c)).flip();
 	}
-	
-	public Set<Card> keySet() {
-		return hand.keySet();
-	}
-	
-	public int cardState(Card c) {
-		return hand.get(c);
-	}
+		
 
 	public void replace(Card a, Card b) {
 		/*
@@ -43,37 +49,15 @@ public class Hand {
 			}
 		}*/
 		hand.remove(a);
-		hand.put(b, 0);
+		hand.add(b);
 	}
-	
-	
-	
-	
+
 	public void printHand() {
-		for (Card c: keySet()) {
-			System.out.println(c + " " + hand.get(c));
+		for (Card c: hand) {
+			System.out.println(c + " " + c.getState());
 		}
 	}
-	/*
-	
-	public int getHandState(int i) {
-		return handState.get(i);
-	}
-	
-	public Card getCard(int i) {
-		return hand.get(i);
-	}
-	
-	public Card trade(Card c, int i) {
-		Card send = hand.get(i)\\;
-		hand.set(i, c);
-		return send;
-	}
-	
-	*/
-	
-	
-	
+
 	public int score() {
 		int total = 0;
 		int[] scores = new int[13];
@@ -83,7 +67,7 @@ public class Hand {
 		}
 		
 		
-		for (Card c: hand.keySet()) {
+		for (Card c: hand) {
 			scores[(c.getNum() % 13)]++;
 		}
 		

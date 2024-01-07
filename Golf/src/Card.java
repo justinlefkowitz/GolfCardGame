@@ -9,8 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 public class Card extends JPanel{
 	
@@ -21,12 +24,14 @@ public class Card extends JPanel{
 		DIAMONDS,
 		SPADES;
 	}
-	
-	
+
 	
 	private int num;
 	private Suit suit;
-	private boolean isUp;
+	private int state; 
+		//0 - down
+		//1 - up
+		//2 - transparent
 	private boolean isHighlighted;
 	
 	private static final Color highlight = new Color(253, 255, 50, 100);
@@ -40,7 +45,7 @@ public class Card extends JPanel{
 	public Card(int n, Suit s) {
 		num = n;
 		suit = s;
-		isUp = false;
+		state = 0;
 		isHighlighted = false;
 		
 		
@@ -56,11 +61,11 @@ public class Card extends JPanel{
 		
 		this.setSize(cardDimension);
 		this.setMaximumSize(cardDimension);
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 	}
 	
 	public String toString() { 
-		String s = "";
 		String number = "";
 		
 
@@ -96,9 +101,7 @@ public class Card extends JPanel{
 		return number + " of " + suit;
 	}
 	
-	
-	public String addressName() {
-		String s = "";
+	private String addressName() {
 		String number = "";
 		
 
@@ -118,21 +121,24 @@ public class Card extends JPanel{
 		return (number + "_of_" + suit).toLowerCase();
 	}
 	
-	
 	public int getNum() {
 		return num;
 	}
 	
-	public String getSuit() {
-		return suit.toString().toLowerCase();
-	}
-
-	public boolean isUp() {
-		return isUp;
+	public int state() {
+		return state;
 	}	
 	
+	public void setState(int i) {
+		state = i;
+	}
+	
+	public int getState() {
+		return state;
+	}
+	
 	public void flip() {
-		isUp = !isUp;
+		state = 1;
 	}
 	
 	public void highlight() {
@@ -141,17 +147,79 @@ public class Card extends JPanel{
 	
 
 	
-	
 	protected void paintComponent(Graphics g) {
-		g.setColor(Color.BLUE);
-		
 		BufferedImage img = null;
 
-		img = cardImage;
-		if (!isUp) img = backImage;
 
+		img = cardImage;
+		if (state == 0) img = backImage; 
 		
-		g.drawImage(img, 0, 0, (this.getWidth() * 2/3), (this.getHeight() * 2/3), null);
+		if (state != 2) {
+			
+			float cardRatio = img.getHeight() / img.getWidth();
+			float panelRatio = this.getHeight() / this.getWidth();
+			
+			
+			if (cardRatio < panelRatio + 1) { //wow if it aint broke don't fix it (+ 1 just magically fixed the ratio testing)
+				g.drawImage(img, 0, (int) ((this.getHeight() - (this.getWidth() * cardRatio)) / 2), this.getWidth(), (int)(this.getWidth() * cardRatio), null);
+			
+			} else {
+				g.drawImage(img, (int)(this.getWidth() - (this.getHeight() / cardRatio))/2, 0, (int) (this.getHeight() / cardRatio), this.getHeight(), null);
+		
+			}
+		
+		} else {
+			
+			float cardRatio = img.getHeight() / img.getWidth();
+			float backRatio = backImage.getHeight() / backImage.getWidth();
+			float panelRatio = this.getHeight() / this.getWidth();
+			
+			
+			//makes the card face transparent to paste on top of the back image
+			BufferedImage tmpImage = new BufferedImage( img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics gOut = tmpImage.createGraphics();
+            
+            // draw the foreground image on the temporary image
+            gOut.drawImage(img, 0, 0, null );
+            gOut.dispose();
+			
+			int width = tmpImage.getWidth();
+            int height = tmpImage.getHeight();
+            int[] pixels = new int[ width * height ];
+            pixels = tmpImage.getRGB( 0, 0, width, height, pixels, 0, width );
+            for ( int i = 0; i < pixels.length; i++ ) {
+                Color c = new Color( pixels[i] );
+                int r = c.getRed();
+                int gr = c.getGreen();
+                int b = c.getBlue();
+                c = new Color( r, gr, b, 100);
+                pixels[i] = c.getRGB();
+            }
+            tmpImage.setRGB( 0, 0, width, height, pixels, 0, width );
+            
+            
+            
+            
+            
+			
+			
+			if (cardRatio < panelRatio + 1) { //wow if it aint broke don't fix it (+ 1 just magically fixed the ratio testing)
+				g.drawImage(backImage, 0, (int) ((this.getHeight() - (this.getWidth() * backRatio)) / 2), this.getWidth(), (int)(this.getWidth() * backRatio), null);
+				g.drawImage(tmpImage, 0, (int) ((this.getHeight() - (this.getWidth() * cardRatio)) / 2), this.getWidth(), (int)(this.getWidth() * cardRatio), null);
+				
+			} else {
+				g.drawImage(backImage, (int)(this.getWidth() - (this.getHeight() / backRatio))/2, 0, (int) (this.getHeight() / backRatio), this.getHeight(), null);
+				g.drawImage(tmpImage, (int)(this.getWidth() - (this.getHeight() / cardRatio))/2, 0, (int) (this.getHeight() / cardRatio), this.getHeight(), null);
+		
+				
+				
+			}
+		
+			
+			
+			
+			
+		}
 		
 		if (isHighlighted) {
 			g.setColor(highlight);
@@ -159,9 +227,6 @@ public class Card extends JPanel{
 		}
 		
 	}
-
-
-	
 
 
 }

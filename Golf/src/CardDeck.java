@@ -25,12 +25,18 @@ public class CardDeck extends JPanel{
 		this.setMaximumSize(new Dimension(5,10));
 	}
 	
+	
+	
 	public Card draw() {
 		if (deck.size() == 0) {
 			return null; //Come back here to throw a reshuffle deck algo
 		}
 		
 		return deck.remove((int) (Math.random() * deck.size()));
+	}
+	
+	public ArrayList<Card> getDeck() {
+		return deck;
 	}
 	
 	protected void paintComponent(Graphics g) {
@@ -43,13 +49,19 @@ public class CardDeck extends JPanel{
 			e.printStackTrace();
 		}
 		
-		g.drawImage(img, 0, 0, null);
+		float cardRatio = img.getHeight() / img.getWidth();
+		float panelRatio = this.getHeight() / this.getWidth();
+		
+		
+		if (cardRatio < panelRatio + 1) {
+			g.drawImage(img, 0, (int) ((this.getHeight() - (this.getWidth() * cardRatio)) / 2), this.getWidth(), (int)(this.getWidth() * cardRatio), null);
+		} else {
+			g.drawImage(img, (int)(this.getWidth() - (this.getHeight() / cardRatio))/2, 0, (int) (this.getHeight() / cardRatio), this.getHeight(), null);
+		};
 		
 	}
 	
-	public ArrayList<Card> getDeck() {
-		return deck;
-	}
+	
 	
 
 	

@@ -106,12 +106,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		gameBoard.add(br);
 		
 
-
-		
-		
-		
-		
-		
 		this.add(gameBoard);
 		
 	}
@@ -176,7 +170,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 
-	@Override
+
 	public void mousePressed(MouseEvent e) {
 		
 		
@@ -226,7 +220,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				
 				
 			//if direct card flip
-			} else if(panel.equals(gameBoard.getComponent(position.get(game.playerID(game.getActivePlayer())))) && game.getActivePlayer().hand.cardState(c) == 0) {
+			} else if(panel.equals(gameBoard.getComponent(position.get(game.playerID(game.getActivePlayer())))) && c.getState() != 1) {
 				
 				c.flip();
 				game.endTurn(c);				
@@ -251,7 +245,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				
 				
 			//if direct card flip
-			} else if(panel.equals(gameBoard.getComponent(position.get(game.playerID(game.getActivePlayer())))) && game.getActivePlayer().hand.cardState(c) == 0) {
+			} else if(panel.equals(gameBoard.getComponent(position.get(game.playerID(game.getActivePlayer())))) && c.getState() != 1) {
 			
 				c.flip();
 				game.endTurn(c);				
@@ -270,7 +264,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			JPanel panel = (JPanel) c.getParent();
 			
 
-			if(panel.equals(gameBoard.getComponent(position.get(game.playerID(game.getActivePlayer())))) && game.getActivePlayer().hand.cardState(c) == 0) {
+			if(panel.equals(gameBoard.getComponent(position.get(game.playerID(game.getActivePlayer())))) && c.getState() != 1) {
 			
 				Card pile = (Card) deckPanel.getComponent(1);
 				int index = cardIndex(panel, c);
@@ -299,24 +293,20 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub	
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 
 	}
-
-	@Override
+	
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -345,10 +335,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		
 		//panel.setBackground(Color.green);
 		panel.setOpaque(false);
-		panel.setLayout(new GridLayout(2,2,10,10));
+		panel.setLayout(new GridLayout(2,2));
 		
 		
-		for (Card c: p.hand.keySet()) {
+		for (Card c: p.hand.getHand()) {
 			c.addMouseListener(this);
 			c.setAlignmentX(CENTER_ALIGNMENT);
 			c.setAlignmentY(CENTER_ALIGNMENT);
@@ -363,7 +353,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		JPanel panel = new JPanel();
 		
 		
-		panel.setLayout(new GridLayout(1,2, 30, 30));
+		panel.setLayout(new GridLayout(1,2));
 		panel.setOpaque(false);
 		
 		game.getCards().addMouseListener(this);
@@ -427,29 +417,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		deckPanel.add(game.getTop());
 	}
 
-	public int cardIndex(JPanel playerPanel, Card c) {
+	private int cardIndex(JPanel playerPanel, Card c) {
 		
-		Component[] cs = playerPanel.getComponents();
-		
-		Card[] cards = new Card[cs.length];
-		
-		ArrayList<Component> a = new ArrayList<>();
-		
-		
-		for (int i = 0; i < cs.length; i++) {
-			a.add((Card) cs[i]);
-		}
-		
-		System.out.println(Arrays.asList(playerPanel.getComponents()).indexOf(c));
 		return Arrays.asList(playerPanel.getComponents()).indexOf(c);
 		
 	}
 	
 	
-	public void playerFlip(JPanel p, int i) {	
-		Card c = (Card) p.getComponent(i);	
-		c.flip();
-	}
+
 	
 	
 }
